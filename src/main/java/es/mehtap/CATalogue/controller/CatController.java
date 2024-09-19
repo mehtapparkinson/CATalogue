@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/cats")
 public class CatController {
-    
+
     //CREATE LOGGER
     private static final Logger logger = LoggerFactory.getLogger(CatController.class);
 
@@ -50,7 +50,7 @@ public class CatController {
         return catRepository.save(cat);
     }
 
-    @GetMapping("/cats/{id}")
+    @GetMapping("/{id}")
     public Cat getCatById(@PathVariable int id) {
         return catRepository.findById(id).orElseThrow(() -> {
             logger.error("Cat with id {} not found", id);
