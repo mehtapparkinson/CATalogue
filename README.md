@@ -70,7 +70,7 @@ Welcome to the CATalogue API! This project is a RESTful API built using Spring B
   - `breed`: Breed of the cat
   - `age`: Age of the cat (in years)
   - `gender`: Gender of the cat (e.g., Male/Female)
-  - `isAdopted`: Boolean indicating whether the cat is adopted or not
+  - `adopted`: Boolean indicating whether the cat is adopted or not
 - **Response**: A JSON object of the newly added cat, including its auto-generated `id`.
 
 ### 5. `GET /cats/{id}` 🔎🐈
@@ -88,7 +88,7 @@ Welcome to the CATalogue API! This project is a RESTful API built using Spring B
   - `breed`: New breed of the cat
   - `age`: New age of the cat
   - `gender`: New gender of the cat
-  - `isAdopted`: Boolean indicating the updated adoption status of the cat
+  - `adopted`: Boolean indicating the updated adoption status of the cat
 - **Response**: A JSON object with the updated details of the cat.
 
 ### 7. `DELETE /cats/{id}` 🙀
