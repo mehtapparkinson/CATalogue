@@ -47,6 +47,16 @@ public class CatController {
         return catRepository.findByIsAdopted(false);
     }
 
+    //GET ALL ADOPTED CATS
+    @GetMapping("/adopted")
+    public List<Cat> getAdoptedCats(){
+        if (catRepository.findByIsAdopted(true).isEmpty()) {
+            logger.warn("No cats have been adopted yet");
+        }
+        logger.info("Fetching all adopted cats");
+        return catRepository.findByIsAdopted(true);
+    }
+
     //ADD CAT
     @PostMapping("/add")
     public Cat addCat(@RequestBody Cat cat){
