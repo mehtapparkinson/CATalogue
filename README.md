@@ -1,7 +1,7 @@
-# CATalogue
-Welcome to the CATalogue API! This project is a RESTful API built using Spring Boot to manage a cat adoption center. The API allows users to manage cats, including creating, updating, deleting, and retrieving information about the cats available for adoption.
+# 🐈 CATalogue 🐈‍⬛
+Welcome to the CATalogue API! This project is a RESTful API built using Spring Boot to manage a cat adoption center. The API allows users to manage cats, including creating, updating, deleting, and retrieving information about the cats available for adoption. 🐾
 
-## Features
+## Features 🪄
 
 - **List all cats** in the adoption center
 - **Filter cats** based on adoption status (adopted or not adopted)
@@ -51,19 +51,19 @@ Welcome to the CATalogue API! This project is a RESTful API built using Spring B
 
 ## API Endpoints
 
-### 1. `GET /cats/`
+### 1. `GET /cats/` 🐱🐱🐱
 - **Description**: Fetches a list of all cats in the adoption center.
 - **Response**: A JSON array containing details of all the cats.
 
-### 2. `GET /cats/not-adopted`
+### 2. `GET /cats/not-adopted` 😿😿😿
 - **Description**: Fetches a list of all cats that have not yet been adopted.
 - **Response**: A JSON array containing details of all the non-adopted cats.
 
-### 3. `GET /cats/adopted`
+### 3. `GET /cats/adopted` 😻😻😻🏠
 - **Description**: Fetches a list of all cats that have been adopted.
 - **Response**: A JSON array containing details of all the adopted cats.
 
-### 4. `POST /cats/add`
+### 4. `POST /cats/add` 🐱🐱🐱➕🐱
 - **Description**: Adds a new cat to the adoption center.
 - **Request Body**: A JSON object with the new cat's details:
   - `name`: Name of the cat
@@ -73,13 +73,13 @@ Welcome to the CATalogue API! This project is a RESTful API built using Spring B
   - `isAdopted`: Boolean indicating whether the cat is adopted or not
 - **Response**: A JSON object of the newly added cat, including its auto-generated `id`.
 
-### 5. `GET /cats/{id}`
+### 5. `GET /cats/{id}` 🔎🐈
 - **Description**: Fetches details of a specific cat by its `id`.
 - **Path Variable**: 
   - `id`: The unique identifier of the cat.
 - **Response**: A JSON object with the details of the specific cat.
 
-### 6. `PUT /cats/{id}`
+### 6. `PUT /cats/{id}` 🐈 => 🐈‍⬛
 - **Description**: Updates the information of a specific cat by its `id`.
 - **Path Variable**: 
   - `id`: The unique identifier of the cat to be updated.
@@ -91,7 +91,7 @@ Welcome to the CATalogue API! This project is a RESTful API built using Spring B
   - `isAdopted`: Boolean indicating the updated adoption status of the cat
 - **Response**: A JSON object with the updated details of the cat.
 
-### 7. `DELETE /cats/{id}`
+### 7. `DELETE /cats/{id}` 🙀
 - **Description**: Deletes a cat from the adoption center by its `id`.
 - **Path Variable**: 
   - `id`: The unique identifier of the cat to be deleted.
