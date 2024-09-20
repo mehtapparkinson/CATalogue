@@ -33,6 +33,13 @@ public class CatController {
     @Autowired
     private CatRepository catRepository;
 
+    //GET ALL CATS
+    @GetMapping("/")
+    public List<Cat> getAllCats(){
+        logger.info("Fetching all cats");
+        return catRepository.findAll();
+    }
+
     //GET ALL NOT ADOPTED CATS
     @GetMapping("/not-adopted")
     public List<Cat> getNotAdoptedCats(){
@@ -49,6 +56,7 @@ public class CatController {
         logger.info("Adding a new cat: {}", cat.getName());
         return catRepository.save(cat);
     }
+
     //GET SPECIFIC CAT
     @GetMapping("/{id}")
     public Cat getCatById(@PathVariable int id) {
