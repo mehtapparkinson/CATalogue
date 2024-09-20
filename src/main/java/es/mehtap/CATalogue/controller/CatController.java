@@ -91,5 +91,22 @@ public class CatController {
         }
     }
 
+    //UPDATE A CAT
+    @PutMapping("/{id}")
+    public Cat updateCat(@PathVariable int id, @RequestBody Cat updatedCat) {
+        if (catRepository.existsById(id)) {
+            logger.info("Updating cat with id {}", id);
+            Cat cat = catRepository.findById(id).get();
+            cat.setName(updatedCat.getName());
+            cat.setBreed(updatedCat.getBreed());
+            cat.setAge(updatedCat.getAge());
+            cat.setGender(updatedCat.getGender());
+            cat.setAdopted(updatedCat.isAdopted());
+            return catRepository.save(cat);
+        } else {
+            logger.error("Cat with id {} not found", id);
+            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Cat not found");
+        }
+    }
 
 }
