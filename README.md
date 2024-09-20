@@ -113,14 +113,14 @@ http://localhost:8080/swagger-ui/index.html
 
 ```mermaid
 graph TD;
-    User-->Controller;
-    Controller-->Model;
-    Model-->Repository;
-    Repository-->Database[(MySQL Database)];
-    Database-->Repository;
-    Repository-->Model;
-    Model-->Controller;
-    Controller-->User;
+    User-->CatController;
+    CatController-->CatModel;
+    CatModel-->CatRepository;
+    CatRepository-->Database[(MySQL Database)];
+    Database-->CatRepository;
+    CatRepository-->CatModel;
+    CatModel-->CatController;
+    CatController-->User;
 ```
 
 - The **User** interacts with the **Controller**.
