@@ -90,6 +90,13 @@ public class CatController {
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(savedCat);
     }
 
+    private Cat findCatByIdOrThrow(int id) {
+        return catRepository.findById(id).orElseThrow(() -> {
+            logger.error("Cat with id {} not found", id);
+            return new ResponseStatusException(HttpStatusCode.valueOf(404), "Cat not found");
+        });
+    }
+
 
     //GET SPECIFIC CAT
     @GetMapping("/{id}")
