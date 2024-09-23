@@ -5,6 +5,7 @@ import es.mehtap.CATalogue.model.Cat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import es.mehtap.CATalogue.repository.CatRepository;
 import org.slf4j.Logger;
@@ -59,13 +60,36 @@ public class CatController {
 
     //ADD CAT
     @PostMapping("/add")
-    public Cat addCat(@RequestBody Cat cat){
+    public ResponseEntity<Cat> addCat(@RequestBody Cat cat) {
+        // Validate name
         if (cat.getName() == null || cat.getName().isEmpty()) {
             logger.warn("Attempted to add a cat with an empty name");
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Cat name is required");
         }
+
+        // Validate breed
+        if (cat.getBreed() == null || cat.getBreed().isEmpty()) {
+            logger.warn("Attempted to add a cat with an empty breed");
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Cat breed is required");
+        }
+
+        // Validate age (for example, age must be non-negative)
+        if (cat.getAge() < 0) {
+            logger.warn("Attempted to add a cat with a negative age");
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Cat age cannot be negative");
+        }
+
+        // Validate gender
+        if (cat.getGender() == null || cat.getGender().isEmpty()) {
+            logger.warn("Attempted to add a cat with an empty gender");
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Cat gender is required");
+        }
+
         logger.info("Adding a new cat: {}", cat.getName());
-        return catRepository.save(cat);
+        Cat savedCat = catRepository.save(cat);
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(savedCat);
     }
+
 
     //GET SPECIFIC CAT
     @GetMapping("/{id}")
