@@ -102,13 +102,9 @@ public class CatController {
     @GetMapping("/{id}")
     public Cat getCatById(@PathVariable int id) {
         logger.info("Fetching cat with id {}", id);
-        if (catRepository.existsById(id)) {
-            return catRepository.findById(id).get();
-        } else {
-            logger.error("Cat with id {} not found", id);
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Cat not found");
-        }
+        return findCatByIdOrThrow(id);
     }
+
 
     //DELETE A CAT
     @DeleteMapping("/{id}")
