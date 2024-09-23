@@ -90,47 +90,47 @@ public class CatController {
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(savedCat);
     }
 
+    private Cat findCatByIdOrThrow(int id) {
+        return catRepository.findById(id).orElseThrow(() -> {
+            logger.error("Cat with id {} not found", id);
+            return new ResponseStatusException(HttpStatusCode.valueOf(404), "Cat not found");
+        });
+    }
+
 
     //GET SPECIFIC CAT
     @GetMapping("/{id}")
     public Cat getCatById(@PathVariable int id) {
         logger.info("Fetching cat with id {}", id);
-        if (catRepository.existsById(id)) {
-            return catRepository.findById(id).get();
-        } else {
-            logger.error("Cat with id {} not found", id);
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Cat not found");
-        }
+        return findCatByIdOrThrow(id);
     }
+
 
     //DELETE A CAT
     @DeleteMapping("/{id}")
     public void deleteCat(@PathVariable int id) {
-        if (catRepository.existsById(id)) {
-            logger.info("Deleting cat with id {}", id);
-            catRepository.deleteById(id);
-        } else {
-            logger.error("Cat with id {} not found", id);
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Cat not found");
-        }
+        logger.info("Deleting cat with id {}", id);
+        findCatByIdOrThrow(id);
+        catRepository.deleteById(id);
+        logger.info("Cat with id {} successfully deleted", id);
     }
+
 
     //UPDATE A CAT
     @PutMapping("/{id}")
     public Cat updateCat(@PathVariable int id, @RequestBody Cat updatedCat) {
-        if (catRepository.existsById(id)) {
-            logger.info("Updating cat with id {}", id);
-            Cat cat = catRepository.findById(id).get();
-            cat.setName(updatedCat.getName());
-            cat.setBreed(updatedCat.getBreed());
-            cat.setAge(updatedCat.getAge());
-            cat.setGender(updatedCat.getGender());
-            cat.setAdopted(updatedCat.isAdopted());
-            return catRepository.save(cat);
-        } else {
-            logger.error("Cat with id {} not found", id);
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Cat not found");
-        }
+        logger.info("Updating cat with id {}", id);
+        Cat cat = findCatByIdOrThrow(id); 
+
+        // Update fields
+        cat.setName(updatedCat.getName());
+        cat.setBreed(updatedCat.getBreed());
+        cat.setAge(updatedCat.getAge());
+        cat.setGender(updatedCat.getGender());
+        cat.setAdopted(updatedCat.isAdopted());
+
+        return catRepository.save(cat);
     }
+
 
 }
