@@ -109,14 +109,12 @@ public class CatController {
     //DELETE A CAT
     @DeleteMapping("/{id}")
     public void deleteCat(@PathVariable int id) {
-        if (catRepository.existsById(id)) {
-            logger.info("Deleting cat with id {}", id);
-            catRepository.deleteById(id);
-        } else {
-            logger.error("Cat with id {} not found", id);
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Cat not found");
-        }
+        logger.info("Deleting cat with id {}", id);
+        findCatByIdOrThrow(id);
+        catRepository.deleteById(id);
+        logger.info("Cat with id {} successfully deleted", id);
     }
+
 
     //UPDATE A CAT
     @PutMapping("/{id}")
