@@ -108,11 +108,14 @@ public class CatController {
 
     //DELETE A CAT
     @DeleteMapping("/{id}")
-    public void deleteCat(@PathVariable int id) {
-        logger.info("Deleting cat with id {}", id);
+    public ResponseEntity<String> deleteCat(@PathVariable int id) {
+        logger.info("Attempting to delete cat with id {}", id);
         findCatByIdOrThrow(id);
+
         catRepository.deleteById(id);
         logger.info("Cat with id {} successfully deleted", id);
+
+        return ResponseEntity.ok("Cat with id " + id + " deleted successfully");
     }
 
 
@@ -120,7 +123,7 @@ public class CatController {
     @PutMapping("/{id}")
     public Cat updateCat(@PathVariable int id, @RequestBody Cat updatedCat) {
         logger.info("Updating cat with id {}", id);
-        Cat cat = findCatByIdOrThrow(id); 
+        Cat cat = findCatByIdOrThrow(id);
 
         // Update fields
         cat.setName(updatedCat.getName());
