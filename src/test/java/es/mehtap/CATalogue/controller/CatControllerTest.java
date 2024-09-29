@@ -161,7 +161,21 @@ class CatControllerTest {
         assertEquals("Cat gender is required", exception.getReason());
     }
 
+    @Test
+    void when_addCatWithNullGender_then_throwsBadRequest() {
+        // Arrange
+        Cat invalidCat = new Cat(1, "Whiskers", "Siamese", 2, null, false);
 
+        // Act
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> catController.addCat(invalidCat)
+        );
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("Cat gender is required", exception.getReason());
+    }
 
 
 
