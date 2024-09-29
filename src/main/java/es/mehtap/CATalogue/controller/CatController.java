@@ -148,5 +148,40 @@ public class CatController {
         return catRepository.save(cat);
     }
 
+    // USE GENERIC METHOD TO UPDATE CAT DATA
+    public <T> Cat updateCatField(Cat cat, String fieldType, T newValue) {
+        if ("name".equalsIgnoreCase(fieldType)) {
+            cat.setName((String) newValue);
+        } else if ("age".equalsIgnoreCase(fieldType)) {
+            cat.setAge((Integer) newValue);
+        } else if ("breed".equalsIgnoreCase(fieldType)) {
+            cat.setBreed((String) newValue);
+        }
+        return catRepository.save(cat);
+    }
+
+    //  UPDATE CAT NAME
+    @PutMapping("/{id}/update/name")
+    public ResponseEntity<Cat> updateCatName(@PathVariable int id, @RequestParam String newName) {
+        Cat cat = findCatByIdOrThrow(id);
+        Cat updatedCat = updateCatField(cat, "name", newName);
+        return ResponseEntity.ok(updatedCat);
+    }
+
+    // UPDATE CAT AGE
+    @PutMapping("/{id}/update/age")
+    public ResponseEntity<Cat> updateCatAge(@PathVariable int id, @RequestParam int newAge) {
+        Cat cat = findCatByIdOrThrow(id);
+        Cat updatedCat = updateCatField(cat, "age", newAge);
+        return ResponseEntity.ok(updatedCat);
+    }
+
+    // UPDATE CAT BREED
+    @PutMapping("/{id}/update/breed")
+    public ResponseEntity<Cat> updateCatBreed(@PathVariable int id, @RequestParam String newBreed) {
+        Cat cat = findCatByIdOrThrow(id);
+        Cat updatedCat = updateCatField(cat, "breed", newBreed);
+        return ResponseEntity.ok(updatedCat);
+    }
 
 }
