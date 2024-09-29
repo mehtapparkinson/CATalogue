@@ -50,6 +50,22 @@ class CatControllerTest {
     }
 
     @Test
+    void when_addValidCat_then_catIsSaved() {
+        // ARRANGE
+        Cat validCat = new Cat(1, "Whiskers", "Siamese", 2, "Male", false);
+
+        // Mock repository behavior
+        when(catRepository.save(validCat)).thenReturn(validCat);
+
+        // ACT
+        ResponseEntity<Cat> response = catController.addCat(validCat);
+
+        //ASSERT
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(validCat, response.getBody());
+    }
+
+    @Test
     void when_deleteCatById_then_catIsDeleted() {
         // Arrange
         Cat existingCat = new Cat(1, "Whiskers", "Siamese", 2, "Male", false);
