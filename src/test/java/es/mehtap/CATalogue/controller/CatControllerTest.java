@@ -250,4 +250,21 @@ class CatControllerTest {
         assertEquals("Fluffy", response.getBody().getName());
     }
 
+    @Test
+    void when_updateCatAge_then_ageIsUpdated() {
+        // Arrange change age of cat
+        Cat existingCat = new Cat(1, "Whiskers", "Siamese", 2, "Male", false);
+        Cat updatedCat = new Cat(1, "Whiskers", "Siamese", 4, "Male", false);
+
+        when(catRepository.findById(1)).thenReturn(Optional.of(existingCat));
+        when(catRepository.save(existingCat)).thenReturn(updatedCat);
+
+        // Act
+        ResponseEntity<Cat> response = catController.updateCatAge(1, 4);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(4, response.getBody().getAge());
+    }
+
 }
