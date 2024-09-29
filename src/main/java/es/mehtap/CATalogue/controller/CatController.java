@@ -4,6 +4,7 @@ package es.mehtap.CATalogue.controller;
 import es.mehtap.CATalogue.model.Cat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,11 +43,20 @@ public class CatController {
     }
 
     //GET ALL NOT ADOPTED CATS
+    //Updated with stream
     @GetMapping("/not-adopted")
-    public List<Cat> getNotAdoptedCats(){
-        logger.info("Fetching all not-adopted cats");
-        return catRepository.findByIsAdopted(false);
+    public List<Cat> getNotAdoptedCats() {
+        // Fetch all cats from the database
+        List<Cat> allCats = catRepository.findAll();
+
+        // filter the cats that have not been adopted and turn them into List and return them
+        List<Cat> notAdoptedCats = allCats.stream()
+                .filter(cat -> !cat.isAdopted())
+                .toList();
+
+        return notAdoptedCats;
     }
+
 
     //GET ALL ADOPTED CATS
     @GetMapping("/adopted")
@@ -110,13 +120,16 @@ public class CatController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCat(@PathVariable int id) {
         logger.info("Attempting to delete cat with id {}", id);
-        findCatByIdOrThrow(id);
-
-        catRepository.deleteById(id);
-        logger.info("Cat with id {} successfully deleted", id);
-
-        return ResponseEntity.ok("Cat with id " + id + " deleted successfully");
+        try {
+            Cat cat = findCatByIdOrThrow(id);
+            catRepository.deleteById(id);
+            return ResponseEntity.ok("Cat with id " + id + " deleted successfully");
+        } catch (ResponseStatusException e) {
+            logger.error("Failed to delete cat with id {}", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found");
+        }
     }
+
 
 
     //UPDATE A CAT
@@ -135,5 +148,40 @@ public class CatController {
         return catRepository.save(cat);
     }
 
+    // USE GENERIC METHOD TO UPDATE CAT DATA
+    public <T> Cat updateCatField(Cat cat, String fieldType, T newValue) {
+        if ("name".equalsIgnoreCase(fieldType)) {
+            cat.setName((String) newValue);
+        } else if ("age".equalsIgnoreCase(fieldType)) {
+            cat.setAge((Integer) newValue);
+        } else if ("breed".equalsIgnoreCase(fieldType)) {
+            cat.setBreed((String) newValue);
+        }
+        return catRepository.save(cat);
+    }
+
+    //  UPDATE CAT NAME
+    @PutMapping("/{id}/update/name")
+    public ResponseEntity<Cat> updateCatName(@PathVariable int id, @RequestParam String newName) {
+        Cat cat = findCatByIdOrThrow(id);
+        Cat updatedCat = updateCatField(cat, "name", newName);
+        return ResponseEntity.ok(updatedCat);
+    }
+
+    // UPDATE CAT AGE
+    @PutMapping("/{id}/update/age")
+    public ResponseEntity<Cat> updateCatAge(@PathVariable int id, @RequestParam int newAge) {
+        Cat cat = findCatByIdOrThrow(id);
+        Cat updatedCat = updateCatField(cat, "age", newAge);
+        return ResponseEntity.ok(updatedCat);
+    }
+
+    // UPDATE CAT BREED
+    @PutMapping("/{id}/update/breed")
+    public ResponseEntity<Cat> updateCatBreed(@PathVariable int id, @RequestParam String newBreed) {
+        Cat cat = findCatByIdOrThrow(id);
+        Cat updatedCat = updateCatField(cat, "breed", newBreed);
+        return ResponseEntity.ok(updatedCat);
+    }
 
 }
