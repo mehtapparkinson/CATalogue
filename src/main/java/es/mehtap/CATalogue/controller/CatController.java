@@ -42,11 +42,20 @@ public class CatController {
     }
 
     //GET ALL NOT ADOPTED CATS
+    //Updated with stream
     @GetMapping("/not-adopted")
-    public List<Cat> getNotAdoptedCats(){
-        logger.info("Fetching all not-adopted cats");
-        return catRepository.findByIsAdopted(false);
+    public List<Cat> getNotAdoptedCats() {
+        // Fetch all cats from the database
+        List<Cat> allCats = catRepository.findAll();
+
+        // filter the cats that have not been adopted and turn them into List and return them
+        List<Cat> notAdoptedCats = allCats.stream()
+                .filter(cat -> !cat.isAdopted())
+                .toList();
+
+        return notAdoptedCats;
     }
+
 
     //GET ALL ADOPTED CATS
     @GetMapping("/adopted")
