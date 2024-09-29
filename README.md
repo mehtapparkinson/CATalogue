@@ -127,3 +127,95 @@ graph TD;
 - The **Controller** processes the request using the **Model**.
 - The **Repository** performs the necessary operations on the **Database**, and the results flow back through the same chain.
 
+---
+
+# 🐱 Testing Instructions for the CATalogue API 🐱
+
+## How to Run Tests in IntelliJ
+
+### 1. Open the Project in IntelliJ:
+- Ensure you have opened the project in IntelliJ.
+
+### 2. Navigate to the Test Class:
+- In the **Project** tab, expand the `src/test/java` directory.
+- Navigate to your test classes, for example, `CatControllerTest.java`.
+
+### 3. Run the Tests:
+- **Option 1**: Right-click on the test class (e.g., `CatControllerTest.java`), then select **Run 'CatControllerTest'** to run all tests in that class.
+- **Option 2**: If you want to run a specific test method, right-click on that method and select **Run 'methodName'**.
+
+### 4. View Test Results:
+- IntelliJ will display the test results at the bottom of the screen in the **Run** window.
+- You can see which tests passed and failed, along with details for any failed tests.
+
+## Maven Command to Run Tests 
+If you want to run the tests using **Maven** in the terminal (after installing Maven):
+
+### Steps:
+1. Open the terminal.
+2. Run the following command:
+
+```bash
+mvn test
+```
+This will run all the tests in your project, and the results will be displayed in the terminal.
+
+# 🐱 List of Available Tests for the CATalogue API 🐱
+
+Here are the unit tests available in the CATalogue API project:
+## **Fetching Cats Tests**:
+
+1. **`when_getNotAdoptedCats_then_returnOnlyNotAdoptedCats`**:
+   - Ensures that only cats that have not been adopted are returned.
+
+2. **`when_getCatById_then_return`**:
+   - Verifies that fetching a cat by its ID works correctly.
+
+3. **`when_getCatById_then_throwNotFound`**:
+   - Verifies that trying to fetch a non-existent cat throws a `NOT_FOUND` exception.
+
+## **Adding Cats Tests**:
+
+1. **`when_addValidCat_then_catIsSaved`**:
+   - Ensures a valid cat is added successfully.
+
+2. **`when_addCatWithEmptyName_then_throwsBadRequest`**:
+   - Verifies that adding a cat with an empty name throws a `BAD_REQUEST` exception.
+
+3. **`when_addCatWithEmptyBreed_then_throwsBadRequest`**:
+   - Verifies that adding a cat with an empty breed throws a `BAD_REQUEST` exception.
+
+4. **`when_addCatWithNegativeAge_then_throwsBadRequest`**:
+   - Verifies that adding a cat with a negative age throws a `BAD_REQUEST` exception.
+
+5. **`when_addCatWithEmptyGender_then_throwsBadRequest`**:
+   - Ensures that adding a cat with an empty gender throws a `BAD_REQUEST` exception.
+
+6. **`when_addCatWithNullGender_then_throwsBadRequest`**:
+   - Ensures that adding a cat with a null gender throws a `BAD_REQUEST` exception.
+
+## **Updating Cats Tests**:
+
+1. **`when_updateCat_then_returnUpdatedCat`**:
+   - Ensures that updating a cat with valid data works as expected.
+
+2. **`when_updateNonExistentCat_then_throwNotFound`**:
+   - Verifies that updating a non-existent cat throws a `NOT_FOUND` exception.
+
+3. **`when_updateCatName_then_nameIsUpdated`**:
+   - Ensures that updating the cat's name works correctly.
+
+4. **`when_updateCatAge_then_ageIsUpdated`**:
+   - Ensures that updating the cat's age works correctly.
+
+5. **`when_updateCatBreed_then_breedIsUpdated`**:
+   - Verifies that updating the cat's breed works as expected.
+
+## **Deleting Cats Tests**:
+
+1. **`when_deleteCatById_then_catIsDeleted`**:
+   - Ensures that a cat can be successfully deleted by ID.
+
+2. **`when_deleteNonExistentCat_then_throwsNotFoundException`**:
+   - Verifies that deleting a non-existent cat throws a `NOT_FOUND` exception.
+
