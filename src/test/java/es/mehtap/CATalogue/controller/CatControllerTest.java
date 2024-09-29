@@ -82,7 +82,6 @@ class CatControllerTest {
         assertEquals("Cat name is required", exception.getReason());
     }
 
-
     @Test
     void when_deleteCatById_then_catIsDeleted() {
         // Arrange
@@ -113,6 +112,23 @@ class CatControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertEquals("Cat not found", exception.getReason());
     }
+
+    @Test
+    void when_addCatWithEmptyBreed_then_throwsBadRequest() {
+        // Arrange
+        Cat invalidCat = new Cat(1, "Whiskers", "", 2, "Male", false);
+
+        // Act
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> catController.addCat(invalidCat)
+        );
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("Cat breed is required", exception.getReason());
+    }
+
 
 
 
