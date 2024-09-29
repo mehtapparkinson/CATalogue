@@ -233,4 +233,21 @@ class CatControllerTest {
         assertEquals("Cat not found", exception.getReason());
     }
 
+    @Test
+    void when_updateCatName_then_nameIsUpdated() {
+        // Arrange change name of cat
+        Cat existingCat = new Cat(1, "Whiskers", "Siamese", 2, "Male", false);
+        Cat updatedCat = new Cat(1, "Fluffy", "Siamese", 2, "Male", false);
+
+        when(catRepository.findById(1)).thenReturn(Optional.of(existingCat));
+        when(catRepository.save(existingCat)).thenReturn(updatedCat);
+
+        // Act
+        ResponseEntity<Cat> response = catController.updateCatName(1, "Fluffy");
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Fluffy", response.getBody().getName());
+    }
+
 }
