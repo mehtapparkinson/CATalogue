@@ -177,6 +177,22 @@ class CatControllerTest {
         assertEquals("Cat gender is required", exception.getReason());
     }
 
+    @Test
+    void when_getCatById_then_return () {
+        //ARRANGE
+        Cat validCat = new Cat(1, "Whiskers", "Siamese", 2, "Male", false);
+        
+        when(catRepository.findById(1)).thenReturn(Optional.of(validCat));
+        //ACT
+        Cat cat = catController.getCatById(1);
+        //ASSERT
+        assertEquals(validCat, cat);
+    }
+
+
+
+
+
 
 
 }
