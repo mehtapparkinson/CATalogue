@@ -7,12 +7,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CatControllerTest {
@@ -45,6 +48,23 @@ class CatControllerTest {
         assertTrue(notAdoptedCats.contains(cat3));
         assertFalse(notAdoptedCats.contains(cat2));
     }
+
+    @Test
+    void when_deleteCatById_then_catIsDeleted() {
+        // Arrange
+        Cat existingCat = new Cat(1, "Whiskers", "Siamese", 2, "Male", false);
+        when(catRepository.findById(1)).thenReturn(Optional.of(existingCat));
+
+        // Act
+        ResponseEntity<String> response = catController.deleteCat(1);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Cat with id 1 deleted successfully", response.getBody());
+
+    }
+
+
 
 
 
