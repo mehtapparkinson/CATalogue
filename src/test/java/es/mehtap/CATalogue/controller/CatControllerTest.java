@@ -48,6 +48,13 @@ class CatControllerTest {
         assertTrue(notAdoptedCats.contains(cat1));
         assertTrue(notAdoptedCats.contains(cat3));
         assertFalse(notAdoptedCats.contains(cat2));
+
+        //STREAM TO VERIFY
+        boolean containsWhiskers = notAdoptedCats.stream().anyMatch(cat -> cat.getId() == 1);
+        boolean containsShadow = notAdoptedCats.stream().anyMatch(cat -> cat.getId() == 3);
+
+        assertTrue(containsWhiskers && containsShadow, "Whiskers and Shadow should be in the not adopted list");
+
     }
 
     @Test
