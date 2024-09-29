@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -79,6 +80,23 @@ class CatControllerTest {
         assertEquals("Cat with id 1 deleted successfully", response.getBody());
 
     }
+
+    @Test
+    void when_deleteNonExistentCat_then_throwsNotFoundException() {
+        // Arrange
+        when(catRepository.findById(999)).thenReturn(Optional.empty());
+
+        // Act
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> catController.deleteCat(999)
+        );
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals("Cat not found", exception.getReason());
+    }
+
 
 
 
