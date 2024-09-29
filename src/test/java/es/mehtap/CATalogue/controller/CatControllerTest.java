@@ -67,6 +67,23 @@ class CatControllerTest {
     }
 
     @Test
+    void when_addCatWithEmptyName_then_throwsBadRequest() {
+        // Arrange
+        Cat invalidCat = new Cat(1, "", "Siamese", 2, "Male", false);
+
+        // Act
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> catController.addCat(invalidCat)
+        );
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("Cat name is required", exception.getReason());
+    }
+
+
+    @Test
     void when_deleteCatById_then_catIsDeleted() {
         // Arrange
         Cat existingCat = new Cat(1, "Whiskers", "Siamese", 2, "Male", false);
