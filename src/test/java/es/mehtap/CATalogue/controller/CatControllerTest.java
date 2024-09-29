@@ -203,6 +203,21 @@ class CatControllerTest {
         assertEquals("Cat not found", exception.getReason());
     }
 
+    @Test
+    void when_updateCat_then_returnUpdatedCat () {
+        //ARRANGE
+        Cat validCat = new Cat(1, "Whiskers", "Siamese", 2, "Male", false);
+        Cat updatedCat = new Cat(1, "Shadow", "Persian", 4, "Male", true);
+
+        when(catRepository.findById(1)).thenReturn(Optional.of(validCat));
+        when(catRepository.save(updatedCat)).thenReturn(updatedCat);
+
+        //ACT
+        Cat cat = catController.updateCat(1, updatedCat);
+        //ASSERT
+        assertEquals(updatedCat, cat);
+    }
+
 
 
 
