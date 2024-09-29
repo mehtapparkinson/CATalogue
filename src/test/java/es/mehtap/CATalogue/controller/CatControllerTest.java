@@ -181,12 +181,26 @@ class CatControllerTest {
     void when_getCatById_then_return () {
         //ARRANGE
         Cat validCat = new Cat(1, "Whiskers", "Siamese", 2, "Male", false);
-        
+
         when(catRepository.findById(1)).thenReturn(Optional.of(validCat));
         //ACT
         Cat cat = catController.getCatById(1);
         //ASSERT
         assertEquals(validCat, cat);
+    }
+
+    @Test
+    void when_getCatById_then_throwNotFound () {
+        //ARRANGE
+        when(catRepository.findById(999)).thenReturn(Optional.empty());
+        //ACT
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> catController.getCatById(999)
+        );
+        //ASSERT
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals("Cat not found", exception.getReason());
     }
 
 
