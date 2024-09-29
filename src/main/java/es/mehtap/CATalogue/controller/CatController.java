@@ -4,6 +4,7 @@ package es.mehtap.CATalogue.controller;
 import es.mehtap.CATalogue.model.Cat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -119,13 +120,16 @@ public class CatController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCat(@PathVariable int id) {
         logger.info("Attempting to delete cat with id {}", id);
-        findCatByIdOrThrow(id);
-
-        catRepository.deleteById(id);
-        logger.info("Cat with id {} successfully deleted", id);
-
-        return ResponseEntity.ok("Cat with id " + id + " deleted successfully");
+        try {
+            Cat cat = findCatByIdOrThrow(id);
+            catRepository.deleteById(id);
+            return ResponseEntity.ok("Cat with id " + id + " deleted successfully");
+        } catch (ResponseStatusException e) {
+            logger.error("Failed to delete cat with id {}", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found");
+        }
     }
+
 
 
     //UPDATE A CAT
