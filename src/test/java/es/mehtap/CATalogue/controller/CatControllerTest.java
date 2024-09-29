@@ -129,6 +129,22 @@ class CatControllerTest {
         assertEquals("Cat breed is required", exception.getReason());
     }
 
+    @Test
+    void when_addCatWithNegativeAge_then_throwsBadRequest() {
+        // Arrange
+        Cat invalidCat = new Cat(1, "Whiskers", "Siamese", -1, "Male", false);
+
+        try {
+            // Act
+            catController.addCat(invalidCat);
+
+        } catch (ResponseStatusException exception) {
+            // Assert
+            assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+            assertEquals("Cat age cannot be negative", exception.getReason());
+        }
+    }
+
 
 
 
