@@ -216,12 +216,21 @@ class CatControllerTest {
         Cat cat = catController.updateCat(1, updatedCat);
         //ASSERT
         assertEquals(updatedCat, cat);
+        }
+
+    @Test
+    void when_updateNonExistentCat_then_throwNotFound () {
+        //ARRANGE
+        Cat updatedCat = new Cat(999, "Shadow", "Persian", 4, "Male", true);
+        when(catRepository.findById(999)).thenReturn(Optional.empty());
+        //ACT
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> catController.updateCat(999, updatedCat)
+        );
+        //ASSERT
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals("Cat not found", exception.getReason());
     }
-
-
-
-
-
-
 
 }
